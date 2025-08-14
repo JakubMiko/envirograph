@@ -18,6 +18,7 @@ module Envirograph
         }
       )
 
+      mount Envirograph::V1::Users
     end
   end
 end
