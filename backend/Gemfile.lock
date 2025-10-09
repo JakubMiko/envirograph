@@ -147,6 +147,8 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.15.1)
+    jwt (3.1.2)
+      base64
     kamal (2.7.0)
       activesupport (>= 7.0)
       base64 (~> 0.2)
@@ -383,6 +385,7 @@ DEPENDENCIES
   grape
   grape-swagger
   grape-swagger-rails
+  jwt
   kamal
   pg (~> 1.1)
   puma (>= 5.0)
