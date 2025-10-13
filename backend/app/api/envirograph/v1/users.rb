@@ -12,7 +12,8 @@ module Envirograph
         post :login do
           user = User.find_by(email: params[:email])
           if user&.valid_password?(params[:password])
-            { success: true, user_id: user.id, admin: user.admin }
+            token = JWT.encode({ user_id: user.id }, Rails.application.credentials.secret_key_base)
+            { token: token, user_id: user.id, admin: user.admin }
           else
             error!("Invalid email or password", 401)
           end
