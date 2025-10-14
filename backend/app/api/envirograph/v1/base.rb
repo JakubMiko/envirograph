@@ -1,6 +1,19 @@
 module Envirograph
   module V1
     class Base < Grape::API
+      class ApiException < StandardError
+        attr_accessor :message, :status
+
+        def initialize(message = nil, status = nil)
+          @message = message
+          @status = status
+        end
+      end
+
+      rescue_from ApiException do |e|
+        error!(e.message, e.status)
+      end
+
       version 'v1', using: :path
 
       get :ping do
