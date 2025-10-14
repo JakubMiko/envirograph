@@ -2,6 +2,31 @@ module Envirograph
   module V1
     class Users < Base
       resource :users do
+        desc "Get current logged-in user data" do
+          success code: 200,
+                  model: UserSerializer,
+                  message: "Returns current logged-in user data"
+        end
+        get :current do
+          authorize!
+          user = current_user
+          { data: UserSerializer.new(user).serializable_hash[:data] }
+        end
+
+        desc "Get user by id" do
+          success code: 200,
+                  model: UserSerializer,
+                  message: "Returns specific user's data based on user ID"
+        end
+        params do
+          requires :id, type: Integer
+        end
+        get ':id' do
+          user = User.find_by(id: params[:id])
+          raise ApiException.new("User not found", 404) unless user
+          { data: UserSerializer.new(user).serializable_hash[:data] }
+        end
+
         desc "Log in user" do
           success code: 200,
                   model: UserSerializer,
