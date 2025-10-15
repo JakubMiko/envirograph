@@ -1,3 +1,5 @@
+# frozen_string_litera: true
+
 module Envirograph
   module V1
     module Entities
