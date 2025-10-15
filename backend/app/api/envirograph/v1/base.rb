@@ -34,6 +34,8 @@ module Envirograph
       end
 
       mount Envirograph::V1::Users
+      mount Envirograph::V1::Series
+      # mount Envirograph::V1::Measurement
 
       add_swagger_documentation(
         api_version: "v1",

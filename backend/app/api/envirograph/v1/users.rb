@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Envirograph
   module V1
     class Users < Base
