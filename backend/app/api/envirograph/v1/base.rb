@@ -15,15 +15,15 @@ module Envirograph
       end
 
       format :json
-      version 'v1', using: :path
+      version "v1", using: :path
 
       get :ping do
-        { ping: 'pong', time: Time.now }
+        { ping: "pong", time: Time.now }
       end
 
       helpers do
         def current_user
-          token = headers["Authorization"]&.split(' ')&.last
+          token = headers["Authorization"]&.split(" ")&.last
           payload = JWT.decode(token, Rails.application.credentials.secret_key_base)[0] rescue nil
           payload ? User.find_by(id: payload["user_id"]) : nil
         end
@@ -33,18 +33,19 @@ module Envirograph
         end
       end
 
+      mount Envirograph::V1::Users
+
       add_swagger_documentation(
-        api_version: 'v1',
+        api_version: "v1",
         hide_documentation_path: true,
-        mount_path: '/swagger_doc',
+        mount_path: "/swagger_doc",
         hide_format: true,
+        base_path: "/api",
         info: {
-          title: 'EnviroGraph API',
-          description: 'API do aplikacji monitorowania jakości wody'
+          title: "EnviroGraph API",
+          description: "API do aplikacji monitorowania jakości wody"
         }
       )
-
-      mount Envirograph::V1::Users
     end
   end
 end

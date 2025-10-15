@@ -16,10 +16,10 @@
 # end
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*' # W produkcji należy ograniczyć do konkretnej domeny
+    origins "*" # W produkcji należy ograniczyć do konkretnej domeny
 
-    resource '*',
+    resource "*",
       headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      methods: [ :get, :post, :put, :patch, :delete, :options, :head ]
   end
 end

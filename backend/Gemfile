@@ -1,9 +1,11 @@
 source "https://rubygems.org"
-gem 'grape'
-gem 'grape-swagger'
-gem 'grape-swagger-rails'
-gem 'rack-cors'
-gem 'jwt'
+gem "grape"
+gem "grape-swagger"
+gem "grape-swagger-rails"
+gem "grape-entity"
+gem "sprockets-rails"
+gem "rack-cors"
+gem "jwt"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.3"
 # Use postgresql as the database for Active Record

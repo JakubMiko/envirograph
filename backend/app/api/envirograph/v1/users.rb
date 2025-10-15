@@ -4,7 +4,7 @@ module Envirograph
       resource :users do
         desc "Get current logged-in user data" do
           success code: 200,
-                  model: UserSerializer,
+                  entity: Envirograph::V1::Entities::UserEntity,
                   message: "Returns current logged-in user data"
         end
         get :current do
@@ -15,13 +15,13 @@ module Envirograph
 
         desc "Get user by id" do
           success code: 200,
-                  model: UserSerializer,
+                  entity: Envirograph::V1::Entities::UserEntity,
                   message: "Returns specific user's data based on user ID"
         end
         params do
           requires :id, type: Integer
         end
-        get ':id' do
+        get ":id" do
           user = User.find_by(id: params[:id])
           raise ApiException.new("User not found", 404) unless user
           { data: UserSerializer.new(user).serializable_hash[:data] }
@@ -29,7 +29,7 @@ module Envirograph
 
         desc "Log in user" do
           success code: 200,
-                  model: UserSerializer,
+                  entity: Envirograph::V1::Entities::UserEntity,
                   message: "Returns JWT token and user data"
         end
         params do
@@ -51,7 +51,7 @@ module Envirograph
 
         desc "Register user" do
           success code: 201,
-                  model: UserSerializer,
+                  entity: Envirograph::V1::Entities::UserEntity,
                   message: "Returns JWT token and user data after registration"
         end
         params do

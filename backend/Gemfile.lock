@@ -133,6 +133,9 @@ GEM
       mustermann-grape (~> 1.1.0)
       rack (>= 2)
       zeitwerk
+    grape-entity (1.0.1)
+      activesupport (>= 3.0.0)
+      multi_json (>= 1.3.2)
     grape-swagger (2.1.2)
       grape (>= 1.7, < 3.0)
       rack-test (~> 2)
@@ -177,6 +180,7 @@ GEM
     mini_mime (1.1.5)
     minitest (5.25.5)
     msgpack (1.8.0)
+    multi_json (1.17.0)
     mustermann (3.0.4)
       ruby2_keywords (~> 0.0.1)
     mustermann-grape (1.1.0)
@@ -336,6 +340,14 @@ GEM
       fugit (~> 1.11.0)
       railties (>= 7.1)
       thor (>= 1.3.1)
+    sprockets (4.2.2)
+      concurrent-ruby (~> 1.0)
+      logger
+      rack (>= 2.2.4, < 4)
+    sprockets-rails (3.5.2)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
+      sprockets (>= 3.0.0)
     sshkit (1.24.0)
       base64
       logger
@@ -385,6 +397,7 @@ DEPENDENCIES
   debug
   devise (~> 4.9)
   grape
+  grape-entity
   grape-swagger
   grape-swagger-rails
   jsonapi-serializer
@@ -398,6 +411,7 @@ DEPENDENCIES
   solid_cable
   solid_cache
   solid_queue
+  sprockets-rails
   thruster
   tzinfo-data
 

@@ -1,6 +1,6 @@
 module Envirograph
   class API < Grape::API
-    prefix 'api'
+    prefix "api"
     format :json
 
     mount Envirograph::V1::Base
