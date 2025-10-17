@@ -1,5 +1,7 @@
+import React from "react";
 import logo from './logo.svg';
 import './App.css';
+import SeriesList from "./SeriesList";
 
 function App() {
   return (
@@ -18,6 +20,10 @@ function App() {
           Learn React
         </a>
       </header>
+      <div>
+        <h1>EnviroGraph</h1>
+        <SeriesList />
+      </div>
     </div>
   );
 }
