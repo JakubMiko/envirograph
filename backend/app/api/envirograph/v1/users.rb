@@ -12,7 +12,7 @@ module Envirograph
         get :current do
           authorize!
           user = current_user
-          { data: UserSerializer.new(user).serializable_hash[:data] }
+          UserSerializer.new(user).serializable_hash
         end
 
         desc "Get user by id" do
@@ -26,7 +26,7 @@ module Envirograph
         get ":id" do
           user = User.find_by(id: params[:id])
           raise ApiException.new("User not found", 404) unless user
-          { data: UserSerializer.new(user).serializable_hash[:data] }
+          UserSerializer.new(user).serializable_hash
         end
 
         desc "Log in user" do
@@ -47,7 +47,7 @@ module Envirograph
           token = JWT.encode({ user_id: user.id }, Rails.application.credentials.secret_key_base)
           {
             token: token,
-            data: UserSerializer.new(user).serializable_hash[:data]
+            data: UserSerializer.new(user).serializable_hash
           }
         end
 
@@ -76,7 +76,7 @@ module Envirograph
             status 201
             {
               token: token,
-              data: UserSerializer.new(user).serializable_hash[:data]
+              data: UserSerializer.new(user).serializable_hash
             }
           else
             raise ApiException.new(user.errors.full_messages.join(", "), 422)
