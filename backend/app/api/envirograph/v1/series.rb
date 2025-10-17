@@ -123,6 +123,22 @@ module Envirograph
           measurements = series.measurements
           MeasurementSerializer.new(measurements).serializable_hash
         end
+
+        desc "Get series created by a given user" do
+          success code: 200,
+                  entity: Envirograph::V1::Entities::SeriesEntity,
+                  message: "Returns all series created by a given user"
+        end
+        params do
+          requires :user_id, type: Integer, desc: "ID of the user"
+        end
+        get "/users/:user_id/series" do
+          user = ::User.find_by(id: params[:user_id])
+          raise ApiException.new("User not found", 404) unless user
+
+          series = user.series
+          SeriesSerializer.new(series).serializable_hash
+        end
       end
     end
   end
