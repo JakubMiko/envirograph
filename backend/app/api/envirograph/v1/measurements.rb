@@ -74,17 +74,83 @@ module Envirograph
                     end
                 end
 
+                desc "Update measurement" do
+                    success code: 200,
+                            entity: Envirograph::V1::Entities::MeasurementEntity,
+                            message: "Updates measurement - authorized only for admin users"
+                end
+                params do
+                    requires :id, type: Integer, desc: "ID of the measurement"
+                    optional :series_id, type: Integer
+                    optional :temperature_c, type: Float
+                    optional :bod_mg_L, type: Float
+                    optional :tss_mg_L, type: Float
+                    optional :do_mg_L, type: Float
+                    optional :conductivity_us_cm, type: Float
+                    optional :swqi, type: Float
+                    optional :measured_at, type: DateTime
+                end
+                put ":id" do
+                    authorize!
+                    raise ApiException.new("Forbidden", 403) unless current_user.admin?
 
+                    measurement = ::Measurement.find_by(id: params[:id])
+                    raise ApiException.new("Measurement not found", 404) unless measurement
+
+                    update_params = declared(params, include_missing: false).except(:id)
+                    if update_params[:series_id]
+                        series = ::Series.find_by(id: update_params[:series_id])
+                        raise ApiException.new("Series not found", 404) unless series
+                        if update_params[:swqi] && (update_params[:swqi] < series.min_swqi || update_params[:swqi] > series.max_swqi)
+                            raise ApiException.new("SWQI out of allowed range for this series", 422)
+                        end
+                    end
+
+                    if measurement.update(update_params)
+                        MeasurementSerializer.new(measurement).serializable_hash
+                    else
+                        raise ApiException.new(measurement.errors.full_messages.join(", "), 422)
+                    end
+                end
+
+                desc "Delete measurement" do
+                    success code: 204,
+                            message: "Deletes measurement - authorized only for admin users"
+                end
+                params do
+                    requires :id, type: Integer, desc: "ID of the measurement"
+                end
+                delete ":id" do
+                    authorize!
+                    raise ApiException.new("Forbidden", 403) unless current_user.admin?
+
+                    measurement = ::Measurement.find_by(id: params[:id])
+                    raise ApiException.new("Measurement not found", 404) unless measurement
+
+                    if measurement.destroy
+                        status 204
+                        body false
+                    else
+                        raise ApiException.new(measurement.errors.full_messages.join(", "), 422)
+                    end
+                end
+
+                desc "Get measurements for a given user" do
+                    success code: 200,
+                            entity: Envirograph::V1::Entities::MeasurementEntity,
+                            message: "Returns all measurements for a given user"
+                end
+                params do
+                    requires :user_id, type: Integer, desc: "ID of the user"
+                end
+                get "/users/:user_id/measurements" do
+                    user = ::User.find_by(id: params[:user_id])
+                    raise ApiException.new("User not found", 404) unless user
+
+                    measurements = user.measurements
+                    MeasurementSerializer.new(measurements).serializable_hash
+                end
             end
         end
     end
 end
-
-
-
-# To-do Implement the following endpoints
-# PUT /api/v1/measurements/:id – edycja pomiaru (admin)
-# DELETE /api/v1/measurements/:id – usunięcie pomiaru (admin)
-# Opcjonalnie:
-
-# GET /api/v1/users/:user_id/measurements – lista pomiarów danego użytkownika (publicznie lub admin)
