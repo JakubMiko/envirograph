@@ -45,7 +45,7 @@ module Envirograph
         base_path: "/api",
         info: {
           title: "EnviroGraph API",
-          description: "API do aplikacji monitorowania jakości wody"
+          description: "API for the water quality monitoring application"
         }
       )
     end
