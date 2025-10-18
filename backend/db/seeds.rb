@@ -16,66 +16,30 @@ User.create!(
     admin: true
 )
 
-Series.create!(
-    name: "Warsaw",
-    min_swqi: 0,
-    max_swqi: 100,
-    color: "orange",
-    user_id: 1
-)
+series = [
+  { name: "Vistula - Warsaw", min_swqi: 20, max_swqi: 90, color: "blue" },
+  { name: "Odra - Wroclaw", min_swqi: 25, max_swqi: 85, color: "green" },
+  { name: "Bug - Terespol", min_swqi: 30, max_swqi: 80, color: "orange" },
+  { name: "Warta - Poznan", min_swqi: 15, max_swqi: 75, color: "purple" },
+  { name: "San - Przemysl", min_swqi: 10, max_swqi: 70, color: "red" }
+]
 
-Series.create!(
-    name: "Bialystok",
-    min_swqi: 25,
-    max_swqi: 85,
-    color: "green",
-    user_id: 2
-)
+series_records = series.map do |s|
+  Series.create!(s.merge(user_id: 2))
+end
 
-Measurement.create!(
-  series_id: 1,
-  user_id: 2,
-  measured_at: Time.now - 3.days,
-  temperature_c: 20.5,
-  bod_mg_L: 8.2,
-  tss_mg_L: 45.0,
-  do_mg_L: 9.1,
-  conductivity_us_cm: 1200,
-  swqi: 75.0
-)
-
-Measurement.create!(
-  series_id: 1,
-  user_id: 2,
-  measured_at: Time.now - 2.days,
-  temperature_c: 21.0,
-  bod_mg_L: 7.5,
-  tss_mg_L: 40.0,
-  do_mg_L: 8.8,
-  conductivity_us_cm: 1180,
-  swqi: 78.0
-)
-
-Measurement.create!(
-  series_id: 2,
-  user_id: 2,
-  measured_at: Time.now - 1.day,
-  temperature_c: 18.0,
-  bod_mg_L: 10.0,
-  tss_mg_L: 60.0,
-  do_mg_L: 7.5,
-  conductivity_us_cm: 1300,
-  swqi: 65.0
-)
-
-Measurement.create!(
-  series_id: 2,
-  user_id: 2,
-  measured_at: Time.now,
-  temperature_c: 19.5,
-  bod_mg_L: 9.0,
-  tss_mg_L: 55.0,
-  do_mg_L: 8.0,
-  conductivity_us_cm: 1250,
-  swqi: 68.0
-)
+series_records.each_with_index do |serie, idx|
+  3.times do |i|
+    Measurement.create!(
+      series_id: serie.id,
+      user_id: 2,
+      measured_at: Time.now - (3 - i).days,
+      temperature_c: 18.0 + idx + i,
+      bod_mg_L: 7.0 + i,
+      tss_mg_L: 40.0 + idx * 2 + i,
+      do_mg_L: 8.0 + i,
+      conductivity_us_cm: 1200 + idx * 10 + i * 5,
+      swqi: 60.0 + idx * 5 + i * 3
+    )
+  end
+end
