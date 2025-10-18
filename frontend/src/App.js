@@ -1,7 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import Layout from "./components/Layout";
+import Layout from "./components/shared/Layout";
+import LoginForm from "./pages/Authentication/LoginForm";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginForm />} />
         </Routes>
       </Layout>
     </BrowserRouter>
