@@ -30,9 +30,8 @@ function Layout({ children }) {
         {children}
       </main>
       <footer style={{
-        marginTop: 48,
         padding: "24px 0 12px 0",
-        background: "#e0f7fa",
+        background: "linear-gradient(180deg, #e0f7fa 0%, #f8fafc 100%)", // gradient zamiast jednolitego koloru
         textAlign: "center",
         color: "#0077b6",
         fontWeight: 500,

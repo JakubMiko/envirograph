@@ -52,57 +52,66 @@ const parameters = [
 
 function ParameterInfo() {
 	return (
-		<Container id="parameters" className="mt-0 min-vh-100 d-flex flex-column justify-content-center">
-			<h2 className="text-primary fw-bold mb-4 text-center">
-				Water Quality Parameters
-			</h2>
-			<Row className="g-4 justify-content-center align-items-stretch mb-4 mx-auto" style={{ maxWidth: 1400 }}>
-				{parameters.slice(0, 3).map((param) => (
-					<Col xs={12} sm={6} lg={4} className="h-100 d-flex" key={param.name}>
-						<Card className="h-100 shadow-lg border-0 rounded-4 parameter-card-bg p-4 w-100">
-							<Card.Body className="d-flex flex-column align-items-center justify-content-center text-center">
-								{param.icon}
-								<Card.Title className={`mb-2 fw-bold fs-6 ${param.color}`}>
-									{param.name}
-								</Card.Title>
-								<Card.Text className="mb-2 small text-muted">
-									{param.desc}
-								</Card.Text>
-								<Card.Text className="mb-0">
-									<span className="fw-bold">Optimal Value:</span>{" "}
-									<span className={`fw-semibold text-${param.linkColor}`}>
-										{param.link}
-									</span>
-								</Card.Text>
-							</Card.Body>
-						</Card>
-					</Col>
-				))}
-			</Row>
-			<Row className="g-4 justify-content-center align-items-stretch mx-auto" style={{ maxWidth: 930 }}>
-				{parameters.slice(3).map((param) => (
-					<Col xs={12} sm={6} lg={6} className="h-100 d-flex" key={param.name}>
-						<Card className="h-100 shadow-lg border-0 rounded-4 parameter-card-bg p-4 w-100">
-							<Card.Body className="d-flex flex-column align-items-center justify-content-center text-center">
-								{param.icon}
-								<Card.Title className={`mb-2 fw-bold fs-6 ${param.color}`}>
-									{param.name}
-								</Card.Title>
-								<Card.Text className="mb-2 small text-muted">
-									{param.desc}
-								</Card.Text>
-								<Card.Text className="mb-0">
-									<span className="fw-bold">Optimal Value:</span>{" "}
-									<span className={`fw-semibold text-${param.linkColor}`}>
-										{param.link}
-									</span>
-								</Card.Text>
-							</Card.Body>
-						</Card>
-					</Col>
-				))}
-			</Row>
-		</Container>
+		<div
+			className="d-flex flex-column align-items-center justify-content-center w-100"
+			style={{
+				minHeight: "70vh",
+				background: "linear-gradient(180deg, #f8fafc 0%, #e0f7fa 100%)",
+				padding: "64px 0 140px 0"
+			}}
+		>
+			<Container id="parameters" className="mt-0 d-flex flex-column justify-content-center">
+				<h2 className="text-primary fw-bold mb-4 text-center">
+					Water Quality Parameters
+				</h2>
+				<Row className="g-4 justify-content-center align-items-stretch mb-4 mx-auto" style={{ maxWidth: 1400 }}>
+					{parameters.slice(0, 3).map((param) => (
+						<Col xs={12} sm={6} lg={4} className="h-100 d-flex" key={param.name}>
+							<Card className="h-100 shadow-lg border-0 rounded-4 parameter-card-bg p-4 w-100">
+								<Card.Body className="d-flex flex-column align-items-center justify-content-center text-center">
+									{param.icon}
+									<Card.Title className={`mb-2 fw-bold fs-6 ${param.color}`}>
+										{param.name}
+									</Card.Title>
+									<Card.Text className="mb-2 small text-muted">
+										{param.desc}
+									</Card.Text>
+									<Card.Text className="mb-0">
+										<span className="fw-bold">Optimal Value:</span>{" "}
+										<span className={`fw-semibold text-${param.linkColor}`}>
+											{param.link}
+										</span>
+									</Card.Text>
+								</Card.Body>
+							</Card>
+						</Col>
+					))}
+				</Row>
+				<Row className="g-4 justify-content-center align-items-stretch mx-auto" style={{ maxWidth: 930 }}>
+					{parameters.slice(3).map((param) => (
+						<Col xs={12} sm={6} lg={6} className="h-100 d-flex" key={param.name}>
+							<Card className="h-100 shadow-lg border-0 rounded-4 parameter-card-bg p-4 w-100">
+								<Card.Body className="d-flex flex-column align-items-center justify-content-center text-center">
+									{param.icon}
+									<Card.Title className={`mb-2 fw-bold fs-6 ${param.color}`}>
+										{param.name}
+									</Card.Title>
+									<Card.Text className="mb-2 small text-muted">
+										{param.desc}
+									</Card.Text>
+									<Card.Text className="mb-0">
+										<span className="fw-bold">Optimal Value:</span>{" "}
+										<span className={`fw-semibold text-${param.linkColor}`}>
+											{param.link}
+										</span>
+									</Card.Text>
+								</Card.Body>
+							</Card>
+						</Col>
+					))}
+				</Row>
+			</Container>
+		</div>
 	);
 }
 
