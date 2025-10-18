@@ -9,7 +9,6 @@ function LandingPage() {
     <Container fluid className="p-0" style={{ minHeight: "100vh", maxWidth: "100vw" }}>
       <LandingHero />
       <ParameterInfo />
-      {/* PŁYNNE PRZEJŚCIE MIĘDZY SEKCJAMI */}
       <div
         style={{
           width: "100%",

@@ -21,7 +21,6 @@ function Layout({ children }) {
             <Nav className="ms-auto">
               <Nav.Link href="/" style={{ fontWeight: 500 }}>Home</Nav.Link>
               <Nav.Link href="#parameters" style={{ fontWeight: 500 }}>Parameters</Nav.Link>
-              {/* Dodaj kolejne linki jeśli chcesz */}
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -31,7 +30,7 @@ function Layout({ children }) {
       </main>
       <footer style={{
         padding: "24px 0 12px 0",
-        background: "linear-gradient(180deg, #e0f7fa 0%, #f8fafc 100%)", // gradient zamiast jednolitego koloru
+        background: "linear-gradient(180deg, #e0f7fa 0%, #f8fafc 100%)",
         textAlign: "center",
         color: "#0077b6",
         fontWeight: 500,
