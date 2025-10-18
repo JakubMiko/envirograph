@@ -51,6 +51,10 @@ module Envirograph
             user_id: current_user.id
           )
 
+          if params[:min_swqi] > params[:max_swqi]
+            raise ApiException.new("Min SWQI cannot be greater than Max SWQI", 422)
+          end
+
           if series.save
             status 201
             SeriesSerializer.new(series).serializable_hash

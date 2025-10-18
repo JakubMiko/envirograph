@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Container, Button } from "react-bootstrap";
 import SeriesList from "./SeriesList";
+import AddSeriesModal from "./AddSeriesModal";
 
 function SeriesPage() {
   const [series, setSeries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const isAdmin = !!user?.attributes?.admin || !!user?.admin;
@@ -18,6 +20,10 @@ function SeriesPage() {
       });
   }, []);
 
+  const handleSeriesAdded = newSeries => {
+    setSeries(prev => [newSeries, ...prev]);
+  };
+
   return (
     <Container className="px-2" style={{ minHeight: "100vh", maxWidth: "1400px" }}>
       <h2 className="text-center fw-bold my-5" style={{ color: "#0077b6" }}>
@@ -25,7 +31,7 @@ function SeriesPage() {
       </h2>
       {isAdmin && (
         <div className="d-flex justify-content-center mb-4">
-          <Button variant="primary" className="fw-bold">
+          <Button variant="primary" className="fw-bold" onClick={() => setShowModal(true)}>
             Add Series
           </Button>
         </div>
@@ -35,6 +41,11 @@ function SeriesPage() {
       ) : (
         <SeriesList series={series} />
       )}
+      <AddSeriesModal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        onSeriesAdded={handleSeriesAdded}
+      />
     </Container>
   );
 }
