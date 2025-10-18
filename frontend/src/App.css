@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+
+.parameter-card-bg {
+  background: linear-gradient(135deg, #f8fafc 70%, #e0f7fa 100%);
+}
