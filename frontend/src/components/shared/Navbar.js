@@ -4,6 +4,14 @@ import { useNavigate } from "react-router-dom";
 
 function AppNavbar() {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/");
+    window.location.reload();
+  };
 
   return (
     <Navbar expand="md" bg="white" variant="light" className="shadow-sm" style={{ minHeight: 70 }}>
@@ -14,15 +22,31 @@ function AppNavbar() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="main-navbar" />
         <Navbar.Collapse id="main-navbar">
-          <Nav className="ms-auto align-items-center gap-2">
-            <Button
-              variant="outline-primary"
-              onClick={() => navigate("/login")}
-              className="fw-bold"
-              style={{ fontWeight: 700, letterSpacing: 1 }}
-            >
-              Login
-            </Button>
+          <Nav className="ms-auto align-items-center gap-3">
+            {user ? (
+              <>
+                <span className="fw-bold" style={{ color: "#0077b6", fontWeight: 700 }}>
+                  Hi, {user.attributes?.first_name || user.first_name}
+                </span>
+                <Button
+                  variant="outline-danger"
+                  onClick={handleLogout}
+                  className="fw-bold ms-3"
+                  style={{ fontWeight: 700, letterSpacing: 1 }}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <Button
+                variant="outline-primary"
+                onClick={() => navigate("/login")}
+                className="fw-bold"
+                style={{ fontWeight: 700, letterSpacing: 1 }}
+              >
+                Login
+              </Button>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
