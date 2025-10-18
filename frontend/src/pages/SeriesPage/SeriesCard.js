@@ -1,8 +1,10 @@
 import React from "react";
 import { Card, Badge } from "react-bootstrap";
 import { BsPencilSquare, BsXCircle } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 function SeriesCard({ serie, isAdmin, onEdit, onDelete }) {
+  const navigate = useNavigate();
   const { name, min_swqi, max_swqi, color } = serie.attributes;
   const measurementsCount = serie.relationships.measurements.data.length;
 
@@ -23,6 +25,7 @@ function SeriesCard({ serie, isAdmin, onEdit, onDelete }) {
         e.currentTarget.style.transform = "none";
         e.currentTarget.style.boxShadow = "0 4px 24px #0077b622";
       }}
+      onClick={() => navigate(`/series/${serie.id}`)}
     >
       <div style={{
         height: 8,

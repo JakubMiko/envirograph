@@ -25,7 +25,7 @@ module Envirograph
         get ':id' do
           series = ::Series.find_by(id: params[:id])
           raise ApiException.new("Series not found", 404) unless series
-          SeriesSerializer.new(series).serializable_hash
+          SeriesSerializer.new(series, include: [:measurements]).serializable_hash
         end
 
         desc "Create new series" do
