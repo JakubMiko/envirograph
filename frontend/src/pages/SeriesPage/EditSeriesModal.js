@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import { COLORS } from "./colors";
 
-function AddSeriesModal({ show, onHide, onSeriesAdded }) {
+
+function EditSeriesModal({ show, onHide, series, onSeriesUpdated }) {
   const [name, setName] = useState("");
   const [min, setMin] = useState("");
   const [max, setMax] = useState("");
@@ -10,15 +11,30 @@ function AddSeriesModal({ show, onHide, onSeriesAdded }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (series) {
+      setName(series.attributes.name);
+      setMin(series.attributes.min_swqi);
+      setMax(series.attributes.max_swqi);
+      setColor(series.attributes.color);
+    }
+  }, [series]);
+
   const handleSubmit = async e => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
+    if (parseFloat(min) > parseFloat(max)) {
+      setError("Min SWQI cannot be greater than Max SWQI");
+      setLoading(false);
+      return;
+    }
+
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("/api/v1/series", {
-        method: "POST",
+      const res = await fetch(`/api/v1/series/${series.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
@@ -32,15 +48,11 @@ function AddSeriesModal({ show, onHide, onSeriesAdded }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Failed to add series");
+        setError(data.error || "Failed to update series");
         setLoading(false);
         return;
       }
-      onSeriesAdded(data.data);
-      setName("");
-      setMin("");
-      setMax("");
-      setColor(COLORS[0].value);
+      onSeriesUpdated(data.data);
       setLoading(false);
       onHide();
     } catch (err) {
@@ -52,7 +64,7 @@ function AddSeriesModal({ show, onHide, onSeriesAdded }) {
   return (
     <Modal show={show} onHide={onHide} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Add New Series</Modal.Title>
+        <Modal.Title>Edit Series</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {error && <Alert variant="danger">{error}</Alert>}
@@ -95,7 +107,7 @@ function AddSeriesModal({ show, onHide, onSeriesAdded }) {
             </Form.Select>
           </Form.Group>
           <Button type="submit" variant="primary" className="w-100 fw-bold" disabled={loading}>
-            {loading ? "Adding..." : "Add Series"}
+            {loading ? "Saving..." : "Save Changes"}
           </Button>
         </Form>
       </Modal.Body>
@@ -103,4 +115,4 @@ function AddSeriesModal({ show, onHide, onSeriesAdded }) {
   );
 }
 
-export default AddSeriesModal;
+export default EditSeriesModal;

@@ -83,6 +83,13 @@ module Envirograph
           raise ApiException.new("Series not found", 404) unless series
 
           update_params = declared(params, include_missing: false).except(:id)
+
+          if update_params[:min_swqi] && update_params[:max_swqi]
+            if update_params[:min_swqi] > update_params[:max_swqi]
+              raise ApiException.new("Min SWQI cannot be greater than Max SWQI", 422)
+            end
+          end
+
           if series.update(update_params)
             SeriesSerializer.new(series).serializable_hash
           else

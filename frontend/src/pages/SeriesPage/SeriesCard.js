@@ -1,13 +1,14 @@
 import React from "react";
 import { Card, Badge } from "react-bootstrap";
+import { BsPencilSquare } from "react-icons/bs";
 
-function SeriesCard({ serie }) {
+function SeriesCard({ serie, isAdmin, onEdit }) {
   const { name, min_swqi, max_swqi, color } = serie.attributes;
   const measurementsCount = serie.relationships.measurements.data.length;
 
   return (
     <Card
-      className="h-100 border-0 shadow-sm text-center"
+      className="h-100 border-0 shadow-sm text-center position-relative"
       style={{
         borderRadius: 18,
         transition: "transform 0.15s, box-shadow 0.15s",
@@ -30,6 +31,24 @@ function SeriesCard({ serie }) {
         borderTopLeftRadius: 18,
         borderTopRightRadius: 18
       }} />
+      {isAdmin && (
+        <BsPencilSquare
+          size={22}
+          className="position-absolute"
+          style={{
+            top: 14,
+            right: 18,
+            color: "#0077b6",
+            cursor: "pointer",
+            opacity: 0.8
+          }}
+          title="Edit series"
+          onClick={e => {
+            e.stopPropagation();
+            onEdit(serie);
+          }}
+        />
+      )}
       <Card.Body className="d-flex flex-column align-items-center justify-content-center">
         <Card.Title className="fw-bold mb-2" style={{ color: "#0077b6", fontSize: "1.25rem" }}>
           {name}
