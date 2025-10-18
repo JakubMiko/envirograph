@@ -19,7 +19,7 @@ function SeriesPage() {
   }, []);
 
   return (
-    <Container className="px-4" style={{ minHeight: "100vh", maxWidth: "1200px" }}>
+    <Container className="px-2" style={{ minHeight: "100vh", maxWidth: "1400px" }}>
       <h2 className="text-center fw-bold my-5" style={{ color: "#0077b6" }}>
         Series
       </h2>

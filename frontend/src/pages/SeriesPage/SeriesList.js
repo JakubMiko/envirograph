@@ -10,7 +10,7 @@ function SeriesList({ series }) {
   return (
     <Row className="g-4 justify-content-center">
       {series.map(serie => (
-        <Col key={serie.id} xs={12} sm={10} md={8} lg={6} xl={5}>
+        <Col key={serie.id} xs={12} sm={10} md={8} lg={4} xl={4}>
           <SeriesCard serie={serie} />
         </Col>
       ))}
