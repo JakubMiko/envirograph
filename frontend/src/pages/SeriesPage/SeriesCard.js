@@ -1,8 +1,8 @@
 import React from "react";
 import { Card, Badge } from "react-bootstrap";
-import { BsPencilSquare } from "react-icons/bs";
+import { BsPencilSquare, BsXCircle } from "react-icons/bs";
 
-function SeriesCard({ serie, isAdmin, onEdit }) {
+function SeriesCard({ serie, isAdmin, onEdit, onDelete }) {
   const { name, min_swqi, max_swqi, color } = serie.attributes;
   const measurementsCount = serie.relationships.measurements.data.length;
 
@@ -32,22 +32,40 @@ function SeriesCard({ serie, isAdmin, onEdit }) {
         borderTopRightRadius: 18
       }} />
       {isAdmin && (
-        <BsPencilSquare
-          size={22}
-          className="position-absolute"
-          style={{
-            top: 14,
-            right: 18,
-            color: "#0077b6",
-            cursor: "pointer",
-            opacity: 0.8
-          }}
-          title="Edit series"
-          onClick={e => {
-            e.stopPropagation();
-            onEdit(serie);
-          }}
-        />
+        <>
+          <BsPencilSquare
+            size={22}
+            className="position-absolute"
+            style={{
+              top: 14,
+              right: 48,
+              color: "#0077b6",
+              cursor: "pointer",
+              opacity: 0.8
+            }}
+            title="Edit series"
+            onClick={e => {
+              e.stopPropagation();
+              onEdit(serie);
+            }}
+          />
+          <BsXCircle
+            size={22}
+            className="position-absolute"
+            style={{
+              top: 14,
+              right: 18,
+              color: "#dc3545",
+              cursor: "pointer",
+              opacity: 0.85
+            }}
+            title="Delete series"
+            onClick={e => {
+              e.stopPropagation();
+              if (typeof onDelete === "function") onDelete(serie);
+            }}
+          />
+        </>
       )}
       <Card.Body className="d-flex flex-column align-items-center justify-content-center">
         <Card.Title className="fw-bold mb-2" style={{ color: "#0077b6", fontSize: "1.25rem" }}>

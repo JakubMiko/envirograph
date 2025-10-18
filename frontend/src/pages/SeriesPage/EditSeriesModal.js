@@ -63,8 +63,8 @@ function EditSeriesModal({ show, onHide, series, onSeriesUpdated }) {
 
   return (
     <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Edit Series</Modal.Title>
+      <Modal.Header closeButton className="justify-content-center">
+        <Modal.Title className="w-100 text-center">Edit Series</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {error && <Alert variant="danger">{error}</Alert>}

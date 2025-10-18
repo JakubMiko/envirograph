@@ -51,8 +51,8 @@ function AddSeriesModal({ show, onHide, onSeriesAdded }) {
 
   return (
     <Modal show={show} onHide={onHide} centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Add New Series</Modal.Title>
+      <Modal.Header closeButton className="justify-content-center">
+        <Modal.Title className="w-100 text-center">Add New Series</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {error && <Alert variant="danger">{error}</Alert>}

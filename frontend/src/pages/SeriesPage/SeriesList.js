@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col } from "react-bootstrap";
 import SeriesCard from "./SeriesCard";
 
-function SeriesList({ series, isAdmin, onEdit }) {
+function SeriesList({ series, isAdmin, onEdit, onDelete }) {
   if (!series.length) {
     return <div className="text-center text-muted">No series found.</div>;
   }
@@ -11,7 +11,12 @@ function SeriesList({ series, isAdmin, onEdit }) {
     <Row className="g-4 justify-content-center">
       {series.map(serie => (
         <Col key={serie.id} xs={12} sm={10} md={8} lg={4} xl={4}>
-          <SeriesCard serie={serie} isAdmin={isAdmin} onEdit={onEdit} />
+          <SeriesCard
+            serie={serie}
+            isAdmin={isAdmin}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
         </Col>
       ))}
     </Row>
