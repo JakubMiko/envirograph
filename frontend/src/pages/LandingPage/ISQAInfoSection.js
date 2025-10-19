@@ -24,19 +24,21 @@ function ISQAInfoSection() {
         Higher index values mean better water quality.
       </p>
       <div
-        className="d-flex flex-column align-items-center mb-4"
+        className="d-flex flex-column align-items-center mb-4 isqa-formula-box"
         style={{
-          border: "2px solid #dee2e6",
+          border: "none",
           borderRadius: "18px",
-          padding: "32px 28px",
-          background: "transparent",
+          padding: "40px 32px",
+          background: "#fff",
           maxWidth: 540,
           width: "100%",
+          boxShadow: "0 4px 32px #0077b622",
+          marginTop: "36px",
         }}
       >
         <span className="d-flex align-items-center gap-2" style={{ marginTop: "-10px", marginBottom: "14px" }}>
           <BsCalculator size={32} color="#0077b6" />
-          <span className="fw-bold text-primary" style={{ fontSize: "1.55rem" }}>ISQA Formula</span>
+          <span className="fw-bold" style={{ fontSize: "1.55rem", color: "#0077b6" }}>ISQA Formula</span>
         </span>
         <span className="fw-bold text-primary fs-4 mb-2 text-center" style={{ width: "100%" }}>
           ISQA = ITEMP × (IBOD + ITSS + IDO + ICOND)
