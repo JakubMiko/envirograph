@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Badge, Table, Button } from "react-bootstrap";
+import { BsPencilSquare } from "react-icons/bs";
 import AddMeasurementModal from "./Measurement/AddMeasurementModal";
+import EditMeasurementModal from "./Measurement/EditMeasurementModal";
 
 function SeriesDetailsPage() {
   const { id } = useParams();
@@ -11,6 +13,8 @@ function SeriesDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const [measurementToEdit, setMeasurementToEdit] = useState(null);
   const pageSize = 10;
 
   useEffect(() => {
@@ -59,6 +63,17 @@ function SeriesDetailsPage() {
         new Date(b.attributes.measured_at) - new Date(a.attributes.measured_at)
       );
     });
+  };
+
+  const handleEditMeasurement = measurement => {
+    setMeasurementToEdit(measurement);
+    setEditModal(true);
+  };
+
+  const handleMeasurementUpdated = updatedMeasurement => {
+    setMeasurements(prev =>
+      prev.map(m => (m.id === updatedMeasurement.id ? updatedMeasurement : m))
+    );
   };
 
   return (
@@ -111,31 +126,56 @@ function SeriesDetailsPage() {
         <div className="text-center text-muted">No measurements found.</div>
       ) : (
         <>
-          <Table striped bordered hover responsive className="shadow-sm">
+          <Table
+            striped
+            bordered
+            hover
+            responsive
+            className="shadow-sm"
+            style={{ fontSize: "1em" }}
+          >
             <thead style={{ background: "#e3f2fd" }}>
               <tr>
-                <th>Date</th>
-                <th>SWQI</th>
-                <th>Temperature [°C]</th>
-                <th>BOD [mg/L]</th>
-                <th>TSS [mg/L]</th>
-                <th>DO [mg/L]</th>
-                <th>Conductivity [μS/cm]</th>
+                <th className="text-center" style={{ verticalAlign: "middle" }}>Date</th>
+                <th className="text-center" style={{ verticalAlign: "middle" }}>SWQI</th>
+                <th className="text-center" style={{ verticalAlign: "middle" }}>Temperature [°C]</th>
+                <th className="text-center" style={{ verticalAlign: "middle" }}>BOD [mg/L]</th>
+                <th className="text-center" style={{ verticalAlign: "middle" }}>TSS [mg/L]</th>
+                <th className="text-center" style={{ verticalAlign: "middle" }}>DO [mg/L]</th>
+                <th className="text-center" style={{ verticalAlign: "middle" }}>Conductivity [μS/cm]</th>
+                {isAdmin && <th className="text-center" style={{ verticalAlign: "middle" }}>Actions</th>}
               </tr>
             </thead>
             <tbody>
               {paginated.map(m => (
                 <tr key={m.id}>
-                  <td className="text-center">
+                  <td
+                    className="text-center"
+                    style={{
+                      whiteSpace: "nowrap",
+                      padding: "6px 12px",
+                      minWidth: 140
+                    }}
+                  >
                     {new Date(m.attributes.measured_at).toLocaleDateString()}{" "}
                     {new Date(m.attributes.measured_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </td>
-                  <td className="fw-bold text-center" style={{ color: "#0077b6" }}>{m.attributes.swqi}</td>
-                  <td className="text-center">{m.attributes.temperature_c}</td>
-                  <td className="text-center">{m.attributes.bod_mg_L}</td>
-                  <td className="text-center">{m.attributes.tss_mg_L}</td>
-                  <td className="text-center">{m.attributes.do_mg_L}</td>
-                  <td className="text-center">{m.attributes.conductivity_us_cm}</td>
+                  <td className="fw-bold text-center" style={{ color: "#0077b6", padding: "6px 12px" }}>{m.attributes.swqi}</td>
+                  <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.temperature_c}</td>
+                  <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.bod_mg_L}</td>
+                  <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.tss_mg_L}</td>
+                  <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.do_mg_L}</td>
+                  <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.conductivity_us_cm}</td>
+                  {isAdmin && (
+                    <td className="text-center" style={{ padding: "6px 12px" }}>
+                      <BsPencilSquare
+                        size={20}
+                        style={{ cursor: "pointer", color: "#0077b6" }}
+                        title="Edit measurement"
+                        onClick={() => handleEditMeasurement(m)}
+                      />
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -165,6 +205,13 @@ function SeriesDetailsPage() {
         onHide={() => setShowAddModal(false)}
         series={series}
         onMeasurementAdded={handleMeasurementAdded}
+      />
+      <EditMeasurementModal
+        show={editModal}
+        onHide={() => setEditModal(false)}
+        measurement={measurementToEdit}
+        series={series}
+        onMeasurementUpdated={handleMeasurementUpdated}
       />
     </Container>
   );
