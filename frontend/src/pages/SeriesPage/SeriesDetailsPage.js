@@ -126,13 +126,16 @@ function SeriesDetailsPage() {
             <tbody>
               {paginated.map(m => (
                 <tr key={m.id}>
-                  <td>{new Date(m.attributes.measured_at).toLocaleString()}</td>
-                  <td className="fw-bold" style={{ color: "#0077b6" }}>{m.attributes.swqi}</td>
-                  <td>{m.attributes.temperature_c}</td>
-                  <td>{m.attributes.bod_mg_L}</td>
-                  <td>{m.attributes.tss_mg_L}</td>
-                  <td>{m.attributes.do_mg_L}</td>
-                  <td>{m.attributes.conductivity_us_cm}</td>
+                  <td className="text-center">
+                    {new Date(m.attributes.measured_at).toLocaleDateString()}{" "}
+                    {new Date(m.attributes.measured_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  </td>
+                  <td className="fw-bold text-center" style={{ color: "#0077b6" }}>{m.attributes.swqi}</td>
+                  <td className="text-center">{m.attributes.temperature_c}</td>
+                  <td className="text-center">{m.attributes.bod_mg_L}</td>
+                  <td className="text-center">{m.attributes.tss_mg_L}</td>
+                  <td className="text-center">{m.attributes.do_mg_L}</td>
+                  <td className="text-center">{m.attributes.conductivity_us_cm}</td>
                 </tr>
               ))}
             </tbody>
