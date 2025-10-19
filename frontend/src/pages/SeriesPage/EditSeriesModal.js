@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
+import Select from "react-select";
 import { COLORS } from "./colors";
 
 
@@ -100,11 +101,15 @@ function EditSeriesModal({ show, onHide, series, onSeriesUpdated }) {
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Color</Form.Label>
-            <Form.Select value={color} onChange={e => setColor(e.target.value)}>
-              {COLORS.map(c => (
-                <option key={c.value} value={c.value}>{c.name}</option>
-              ))}
-            </Form.Select>
+            <Select
+              className="color-select"
+              value={COLORS.find(c => c.value === color)}
+              onChange={option => setColor(option.value)}
+              options={COLORS}
+              getOptionLabel={option => option.name}
+              getOptionValue={option => option.value}
+              menuPlacement="auto"
+            />
           </Form.Group>
           <Button type="submit" variant="primary" className="w-100 fw-bold" disabled={loading}>
             {loading ? "Saving..." : "Save Changes"}
