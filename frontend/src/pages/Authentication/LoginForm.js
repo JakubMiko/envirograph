@@ -25,7 +25,7 @@ function LoginForm() {
       }
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.data.data));
-      navigate("/series");
+      navigate("/");
       window.location.reload();
     } catch (err) {
       setError("Network error");
