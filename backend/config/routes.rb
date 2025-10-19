@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   mount GrapeSwaggerRails::Engine => "/api/docs"
 
   get "up" => "rails/health#show", as: :rails_health_check
+  get "/run_seed", to: "seeds#run"
 end
