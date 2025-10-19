@@ -50,3 +50,9 @@
     visibility: hidden !important;
   }
 }
+
+.series-details-content {
+  min-height: calc(100vh - 180px);
+  display: flex;
+  flex-direction: column;
+}

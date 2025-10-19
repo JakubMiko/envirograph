@@ -108,7 +108,7 @@ function SeriesDetailsPage() {
   };
 
   return (
-    <Container className="py-5" style={{ maxWidth: "900px" }}>
+    <Container className="py-5 series-details-content" style={{ maxWidth: "900px" }}>
       <div className="mb-4 p-4 rounded shadow-sm" style={{ background: "#f8f9fa", position: "relative" }}>
         <Button
           variant="outline-primary"
