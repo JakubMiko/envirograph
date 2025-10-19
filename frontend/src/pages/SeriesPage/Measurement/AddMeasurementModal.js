@@ -10,7 +10,7 @@ function calculateSWQI({ temperature, bod, tss, doVal, conductivity }) {
 
   if (
     [ITEMP, IBOD, ITSS, IDO, ICOND].some(v => isNaN(v))
-  ) return null;
+  ) return 0; // Zwróć 0 jeśli nie wszystkie pola są wypełnione
 
   return ITEMP * (IBOD + ITSS + IDO + ICOND);
 }
@@ -157,12 +157,14 @@ function AddMeasurementModal({ show, onHide, series, onMeasurementAdded }) {
               step="0.1"
             />
           </Form.Group>
-          {swqiLive !== null && (
-            <div className="text-center my-3">
-              <span className="fw-bold">Calculated SWQI:</span>{" "}
-              <span style={{ color: "#0077b6", fontSize: "1.2em" }}>{swqiLive.toFixed(2)}</span>
+          <div className="text-center my-3">
+            <span className="fw-bold">Calculated SWQI:</span>{" "}
+            <span style={{ color: "#0077b6", fontSize: "1.2em" }}>{swqiLive.toFixed(2)}</span>
+            <div className="mt-2">
+              <span className="fw-bold">Note:</span>{" "}
+              SWQI will be calculated and updated automatically once all parameters are filled in. If any field is missing, SWQI is shown as 0.
             </div>
-          )}
+          </div>
           <Button type="submit" variant="primary" className="w-100 fw-bold" disabled={loading}>
             {loading ? "Adding..." : "Add Measurement"}
           </Button>
