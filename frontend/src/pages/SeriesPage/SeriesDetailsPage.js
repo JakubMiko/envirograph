@@ -21,6 +21,7 @@ function SeriesDetailsPage() {
   const [measurementToDelete, setMeasurementToDelete] = useState(null);
   const [highlightedMeasurementId, setHighlightedMeasurementId] = useState(null); // dla hover
   const [selectedMeasurementId, setSelectedMeasurementId] = useState(null); // dla kliknięcia
+  const [printMode, setPrintMode] = useState(false);
   const pageSize = 10;
 
   useEffect(() => {
@@ -43,6 +44,14 @@ function SeriesDetailsPage() {
         setMeasurements(measurementsFull);
       });
   }, [id]);
+
+  const handlePrint = () => {
+    setPrintMode(true);
+    setTimeout(() => {
+      window.print();
+      setPrintMode(false);
+    }, 100);
+  };
 
   if (loading) {
     return <Container className="py-5"><div className="text-center text-muted">Loading...</div></Container>;
@@ -100,7 +109,20 @@ function SeriesDetailsPage() {
 
   return (
     <Container className="py-5" style={{ maxWidth: "900px" }}>
-      <div className="mb-4 p-4 rounded shadow-sm" style={{ background: "#f8f9fa" }}>
+      <div className="mb-4 p-4 rounded shadow-sm" style={{ background: "#f8f9fa", position: "relative" }}>
+        <Button
+          variant="outline-primary"
+          onClick={handlePrint}
+          style={{
+            position: "absolute",
+            top: 16,
+            right: 16,
+            zIndex: 10,
+            display: printMode ? "none" : "inline-block"
+          }}
+        >
+          Print
+        </Button>
         <h2 className="fw-bold text-center mb-3" style={{ color: "#0077b6", letterSpacing: 1 }}>
           {name}
         </h2>
@@ -112,6 +134,7 @@ function SeriesDetailsPage() {
           <div className="d-flex align-items-center gap-2">
             <span className="fw-bold">Color:</span>
             <span
+              className="series-color-box"
               style={{
                 display: "inline-block",
                 width: 28,
@@ -136,7 +159,6 @@ function SeriesDetailsPage() {
         </div>
       </div>
 
-      <h4 className="fw-bold mt-5 mb-3 text-center" style={{ color: "#0077b6" }}>Measurements</h4>
       {measurements.length > 0 && (
         <SWQICurveChart
           measurements={measurements}
@@ -146,12 +168,17 @@ function SeriesDetailsPage() {
           onPointClick={handlePointClick}
         />
       )}
-      {isAdmin && (
-        <div className="d-flex justify-content-center mb-3">
-          <Button variant="success" onClick={() => setShowAddModal(true)}>
-            Add Measurement
+      <h4 className="fw-bold mt-5 mb-3 text-center" style={{ color: "#0077b6" }}>Measurements</h4>
+      {isAdmin && !printMode && (
+      <div className="d-flex justify-content-center mb-3">
+          <Button
+          variant="success"
+          onClick={() => setShowAddModal(true)}
+          className="add-measurement-btn"
+          >
+          Add Measurement
           </Button>
-        </div>
+      </div>
       )}
       {measurements.length === 0 ? (
         <div className="text-center text-muted">No measurements found.</div>
@@ -168,6 +195,7 @@ function SeriesDetailsPage() {
           onEditMeasurement={handleEditMeasurement}
           onDeleteMeasurement={handleDeleteMeasurement}
           onPageChange={setPage}
+          printMode={printMode}
         />
       )}
       <AddMeasurementModal

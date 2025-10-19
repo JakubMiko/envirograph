@@ -40,3 +40,13 @@
 .parameter-card-bg {
   background: linear-gradient(135deg, #f8fafc 70%, #e0f7fa 100%);
 }
+
+@media print {
+  .app-navbar,
+  header,
+  .App-header,
+  .series-color-box {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}

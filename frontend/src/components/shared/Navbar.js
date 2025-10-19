@@ -14,7 +14,7 @@ function AppNavbar() {
   };
 
   return (
-    <Navbar expand="md" bg="white" variant="light" className="shadow-sm" style={{ minHeight: 70 }}>
+    <Navbar expand="md" bg="white" variant="light" className="shadow-sm app-navbar" style={{ minHeight: 70 }}>
       <Container>
         <Navbar.Brand href="/" style={{ fontWeight: 700, fontSize: "1.5rem" }}>
           <span style={{ color: "#0077b6" }}>Enviro</span>

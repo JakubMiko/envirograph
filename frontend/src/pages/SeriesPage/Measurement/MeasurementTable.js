@@ -13,12 +13,15 @@ function MeasurementTable({
   highlightedMeasurementId,
   onRowHover,
   onRowClick,
-  selectedMeasurementId // Add selectedMeasurementId to props
+  selectedMeasurementId,
+  printMode // dodaj printMode
 }) {
   const sorted = measurements.sort(
     (a, b) => new Date(b.attributes.measured_at) - new Date(a.attributes.measured_at)
   );
-  const paginated = sorted.slice((page - 1) * pageSize, page * pageSize);
+  const paginated = printMode
+    ? sorted // jeśli drukujemy, pokaż wszystkie
+    : sorted.slice((page - 1) * pageSize, page * pageSize);
   const totalPages = Math.ceil(sorted.length / pageSize);
 
   return (
@@ -40,7 +43,7 @@ function MeasurementTable({
             <th className="text-center" style={{ verticalAlign: "middle" }}>TSS [mg/L]</th>
             <th className="text-center" style={{ verticalAlign: "middle" }}>DO [mg/L]</th>
             <th className="text-center" style={{ verticalAlign: "middle" }}>Conductivity [μS/cm]</th>
-            {isAdmin && <th className="text-center" style={{ verticalAlign: "middle" }}>Actions</th>}
+            {isAdmin && !printMode && <th className="text-center" style={{ verticalAlign: "middle" }}>Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -73,7 +76,7 @@ function MeasurementTable({
               <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.tss_mg_L}</td>
               <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.do_mg_L}</td>
               <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.conductivity_us_cm}</td>
-              {isAdmin && (
+              {isAdmin && !printMode && (
                 <td className="text-center" style={{ padding: "6px 12px" }}>
                   <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
                     <BsPencilSquare
@@ -95,23 +98,25 @@ function MeasurementTable({
           ))}
         </tbody>
       </Table>
-      <div className="d-flex justify-content-center my-3 gap-2">
-        <button
-          className="btn btn-outline-primary"
-          disabled={page === 1}
-          onClick={() => onPageChange(page - 1)}
-        >
-          Previous
-        </button>
-        <span className="align-self-center">Page {page} of {totalPages}</span>
-        <button
-          className="btn btn-outline-primary"
-          disabled={page === totalPages}
-          onClick={() => onPageChange(page + 1)}
-        >
-          Next
-        </button>
-      </div>
+      {!printMode && (
+        <div className="d-flex justify-content-center my-3 gap-2">
+          <button
+            className="btn btn-outline-primary"
+            disabled={page === 1}
+            onClick={() => onPageChange(page - 1)}
+          >
+            Previous
+          </button>
+          <span className="align-self-center">Page {page} of {totalPages}</span>
+          <button
+            className="btn btn-outline-primary"
+            disabled={page === totalPages}
+            onClick={() => onPageChange(page + 1)}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </>
   );
 }
