@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Badge, Table } from "react-bootstrap";
+import { Container, Badge, Table, Button } from "react-bootstrap";
+import AddMeasurementModal from "./Measurement/AddMeasurementModal";
 
 function SeriesDetailsPage() {
   const { id } = useParams();
@@ -9,6 +10,7 @@ function SeriesDetailsPage() {
   const [measurements, setMeasurements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [showAddModal, setShowAddModal] = useState(false);
   const pageSize = 10;
 
   useEffect(() => {
@@ -46,6 +48,18 @@ function SeriesDetailsPage() {
     .sort((a, b) => new Date(b.attributes.measured_at) - new Date(a.attributes.measured_at));
   const paginated = sortedMeasurements.slice((page - 1) * pageSize, page * pageSize);
   const totalPages = Math.ceil(sortedMeasurements.length / pageSize);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = !!user?.attributes?.admin || !!user?.admin;
+
+  const handleMeasurementAdded = newMeasurement => {
+    setMeasurements(prev => {
+      const updated = [...prev, newMeasurement];
+      return updated.sort((a, b) =>
+        new Date(b.attributes.measured_at) - new Date(a.attributes.measured_at)
+      );
+    });
+  };
 
   return (
     <Container className="py-5" style={{ maxWidth: "900px" }}>
@@ -86,6 +100,13 @@ function SeriesDetailsPage() {
       </div>
 
       <h4 className="fw-bold mt-5 mb-3 text-center" style={{ color: "#0077b6" }}>Measurements</h4>
+      {isAdmin && (
+        <div className="d-flex justify-content-center mb-3">
+          <Button variant="success" onClick={() => setShowAddModal(true)}>
+            Add Measurement
+          </Button>
+        </div>
+      )}
       {measurements.length === 0 ? (
         <div className="text-center text-muted">No measurements found.</div>
       ) : (
@@ -136,6 +157,12 @@ function SeriesDetailsPage() {
           </div>
         </>
       )}
+      <AddMeasurementModal
+        show={showAddModal}
+        onHide={() => setShowAddModal(false)}
+        series={series}
+        onMeasurementAdded={handleMeasurementAdded}
+      />
     </Container>
   );
 }
