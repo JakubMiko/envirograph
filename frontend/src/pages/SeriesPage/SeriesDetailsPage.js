@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Badge, Table, Button } from "react-bootstrap";
-import { BsPencilSquare, BsXCircle } from "react-icons/bs";
+import { Container, Badge, Button } from "react-bootstrap";
 import AddMeasurementModal from "./Measurement/AddMeasurementModal";
 import EditMeasurementModal from "./Measurement/EditMeasurementModal";
 import DeleteMeasurementModal from "./Measurement/DeleteMeasurementModal";
+import MeasurementTable from "./Measurement/MeasurementTable";
 
 function SeriesDetailsPage() {
   const { id } = useParams();
@@ -50,11 +50,6 @@ function SeriesDetailsPage() {
   }
 
   const { name, min_swqi, max_swqi, color } = series.attributes;
-
-  const sortedMeasurements = measurements
-    .sort((a, b) => new Date(b.attributes.measured_at) - new Date(a.attributes.measured_at));
-  const paginated = sortedMeasurements.slice((page - 1) * pageSize, page * pageSize);
-  const totalPages = Math.ceil(sortedMeasurements.length / pageSize);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const isAdmin = !!user?.attributes?.admin || !!user?.admin;
@@ -137,88 +132,15 @@ function SeriesDetailsPage() {
       {measurements.length === 0 ? (
         <div className="text-center text-muted">No measurements found.</div>
       ) : (
-        <>
-          <Table
-            striped
-            bordered
-            hover
-            responsive
-            className="shadow-sm"
-            style={{ fontSize: "1em" }}
-          >
-            <thead style={{ background: "#e3f2fd" }}>
-              <tr>
-                <th className="text-center" style={{ verticalAlign: "middle" }}>Date</th>
-                <th className="text-center" style={{ verticalAlign: "middle" }}>SWQI</th>
-                <th className="text-center" style={{ verticalAlign: "middle" }}>Temperature [°C]</th>
-                <th className="text-center" style={{ verticalAlign: "middle" }}>BOD [mg/L]</th>
-                <th className="text-center" style={{ verticalAlign: "middle" }}>TSS [mg/L]</th>
-                <th className="text-center" style={{ verticalAlign: "middle" }}>DO [mg/L]</th>
-                <th className="text-center" style={{ verticalAlign: "middle" }}>Conductivity [μS/cm]</th>
-                {isAdmin && <th className="text-center" style={{ verticalAlign: "middle" }}>Actions</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {paginated.map(m => (
-                <tr key={m.id}>
-                  <td
-                    className="text-center"
-                    style={{
-                      whiteSpace: "nowrap",
-                      padding: "6px 12px",
-                      minWidth: 140
-                    }}
-                  >
-                    {new Date(m.attributes.measured_at).toLocaleDateString()}{" "}
-                    {new Date(m.attributes.measured_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                  </td>
-                  <td className="fw-bold text-center" style={{ color: "#0077b6", padding: "6px 12px" }}>{m.attributes.swqi}</td>
-                  <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.temperature_c}</td>
-                  <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.bod_mg_L}</td>
-                  <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.tss_mg_L}</td>
-                  <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.do_mg_L}</td>
-                  <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.conductivity_us_cm}</td>
-                  {isAdmin && (
-                    <td className="text-center" style={{ padding: "6px 12px" }}>
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-                        <BsPencilSquare
-                          size={20}
-                          style={{ cursor: "pointer", color: "#0077b6" }}
-                          title="Edit measurement"
-                          onClick={() => handleEditMeasurement(m)}
-                        />
-                        <BsXCircle
-                          size={20}
-                          style={{ cursor: "pointer", color: "#dc3545" }}
-                          title="Delete measurement"
-                          onClick={() => handleDeleteMeasurement(m)}
-                        />
-                      </span>
-                    </td>
-                  )}
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-
-          <div className="d-flex justify-content-center my-3 gap-2">
-            <button
-              className="btn btn-outline-primary"
-              disabled={page === 1}
-              onClick={() => setPage(page - 1)}
-            >
-              Previous
-            </button>
-            <span className="align-self-center">Page {page} of {totalPages}</span>
-            <button
-              className="btn btn-outline-primary"
-              disabled={page === totalPages}
-              onClick={() => setPage(page + 1)}
-            >
-              Next
-            </button>
-          </div>
-        </>
+        <MeasurementTable
+          measurements={measurements}
+          isAdmin={isAdmin}
+          page={page}
+          pageSize={pageSize}
+          onEditMeasurement={handleEditMeasurement}
+          onDeleteMeasurement={handleDeleteMeasurement}
+          onPageChange={setPage}
+        />
       )}
       <AddMeasurementModal
         show={showAddModal}
