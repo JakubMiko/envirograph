@@ -4,6 +4,7 @@ import SeriesList from "./SeriesList";
 import AddSeriesModal from "./AddSeriesModal";
 import EditSeriesModal from "./EditSeriesModal";
 import DeleteSeriesModal from "./DeleteSeriesModal";
+import { apiFetch } from "../../utils/api";
 
 function SeriesPage() {
   const [series, setSeries] = useState([]);
@@ -18,7 +19,7 @@ function SeriesPage() {
   const isAdmin = !!user?.attributes?.admin || !!user?.admin;
 
   useEffect(() => {
-    fetch("/api/v1/series")
+    apiFetch("/api/v1/series")
       .then(res => res.json())
       .then(data => {
         setSeries(data.data || []);

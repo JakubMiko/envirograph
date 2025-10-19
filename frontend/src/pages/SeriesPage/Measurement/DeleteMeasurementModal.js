@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Alert } from "react-bootstrap";
+import { apiFetch } from "../../../utils/api";
 
 function DeleteMeasurementModal({ show, onHide, measurement, onMeasurementDeleted }) {
   const [loading, setLoading] = useState(false);
@@ -10,7 +11,7 @@ function DeleteMeasurementModal({ show, onHide, measurement, onMeasurementDelete
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`/api/v1/measurements/${measurement.id}`, {
+      const res = await apiFetch(`/api/v1/measurements/${measurement.id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`

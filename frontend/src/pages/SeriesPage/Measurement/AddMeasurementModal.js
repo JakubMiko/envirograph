@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import { calculateSWQI } from "../../../utils/measurement/swqi_calculate";
+import { apiFetch } from "../../../utils/api";
 
 function AddMeasurementModal({ show, onHide, series, onMeasurementAdded }) {
   const [temperature, setTemperature] = useState("");
@@ -39,7 +40,7 @@ function AddMeasurementModal({ show, onHide, series, onMeasurementAdded }) {
 
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("/api/v1/measurements", {
+      const res = await apiFetch("/api/v1/measurements", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

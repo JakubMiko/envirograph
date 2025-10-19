@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import Select from "react-select";
 import { COLORS } from "./colors";
+import { apiFetch } from "../../utils/api";
 
 
 function EditSeriesModal({ show, onHide, series, onSeriesUpdated }) {
@@ -34,7 +35,7 @@ function EditSeriesModal({ show, onHide, series, onSeriesUpdated }) {
 
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`/api/v1/series/${series.id}`, {
+      const res = await apiFetch(`/api/v1/series/${series.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Alert } from "react-bootstrap";
+import { apiFetch } from "../../utils/api";
 
 function DeleteSeriesModal({ show, onHide, series, onSeriesDeleted }) {
   const [loading, setLoading] = useState(false);
@@ -10,7 +11,7 @@ function DeleteSeriesModal({ show, onHide, series, onSeriesDeleted }) {
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`/api/v1/series/${series.id}`, {
+      const res = await apiFetch(`/api/v1/series/${series.id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`

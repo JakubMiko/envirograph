@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { apiFetch } from "../../utils/api";
 import { useParams } from "react-router-dom";
 import { Container, Badge, Button } from "react-bootstrap";
 import AddMeasurementModal from "./Measurement/AddMeasurementModal";
@@ -25,14 +26,14 @@ function SeriesDetailsPage() {
   const pageSize = 10;
 
   useEffect(() => {
-    fetch(`/api/v1/series/${id}`)
+    apiFetch(`/api/v1/series/${id}`)
       .then(res => res.json())
       .then(data => {
         setSeries(data.data);
         setLoading(false);
 
         const userId = data.data.attributes.user_id;
-        fetch(`/api/v1/users/${userId}`)
+        apiFetch(`/api/v1/users/${userId}`)
           .then(res => res.json())
           .then(userData => {
             setAuthor(userData.data);

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
 import Select from "react-select";
 import { COLORS } from "./colors";
+import { apiFetch } from "../../utils/api";
 
 function AddSeriesModal({ show, onHide, onSeriesAdded }) {
   const [name, setName] = useState("");
@@ -18,7 +19,7 @@ function AddSeriesModal({ show, onHide, onSeriesAdded }) {
 
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("/api/v1/series", {
+      const res = await apiFetch("/api/v1/series", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

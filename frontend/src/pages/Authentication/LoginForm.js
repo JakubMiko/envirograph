@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../../utils/api";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ function LoginForm() {
     e.preventDefault();
     setError("");
     try {
-      const response = await fetch("/api/v1/users/login", {
+      const response = await apiFetch("/api/v1/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
