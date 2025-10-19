@@ -49,24 +49,34 @@ function AppNavbar() {
                 Series
               </Nav.Link>
               {user && (
-                <>
-                  <span
-                    className="fw-bold d-none d-md-inline"
-                    style={{ color: "#0077b6", fontWeight: 700 }}
-                  >
-                    Hi, {user.attributes?.first_name || user.first_name}
-                  </span>
-                  <Button
-                    variant="outline-danger"
-                    onClick={handleLogout}
-                    className="fw-bold"
-                    style={{ fontWeight: 700, letterSpacing: 1 }}
-                  >
-                    Logout
-                  </Button>
-                </>
+                <Button
+                  variant="outline-danger"
+                  onClick={handleLogout}
+                  className="fw-bold d-block d-md-none mt-2"
+                  style={{ fontWeight: 700, letterSpacing: 1 }}
+                >
+                  Logout
+                </Button>
               )}
             </Nav>
+            {user && (
+              <div className="ms-md-auto d-none d-md-flex align-items-center gap-3">
+                <span
+                  className="fw-bold"
+                  style={{ color: "#0077b6", fontWeight: 700 }}
+                >
+                  Hi, {user.attributes?.first_name || user.first_name}
+                </span>
+                <Button
+                  variant="outline-danger"
+                  onClick={handleLogout}
+                  className="fw-bold"
+                  style={{ fontWeight: 700, letterSpacing: 1 }}
+                >
+                  Logout
+                </Button>
+              </div>
+            )}
             {!user && (
               <div className="ms-md-auto mt-3 mt-md-0">
                 <Button
