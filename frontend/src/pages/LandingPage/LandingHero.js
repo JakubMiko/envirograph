@@ -47,7 +47,7 @@ function LandingHero() {
               onClick={() => {
                 const el = document.getElementById("parameters");
                 if (el) {
-                  const y = el.getBoundingClientRect().top + window.pageYOffset - 100; // 100px offset
+                  const y = el.getBoundingClientRect().top + window.pageYOffset - 100;
                   window.scrollTo({ top: y, behavior: "smooth" });
                 }
               }}

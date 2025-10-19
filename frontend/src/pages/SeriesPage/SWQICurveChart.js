@@ -14,7 +14,7 @@ import "chartjs-adapter-date-fns";
 
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend, TimeScale);
 
-function SWQICurveChart({ measurements, highlightedMeasurementId, onPointClick, onPointHover }) {
+function SWQICurveChart({ measurements, highlightedMeasurementId, selectedMeasurementId, onPointClick, onPointHover }) {
   const sorted = [...measurements].sort(
     (a, b) => new Date(a.attributes.measured_at) - new Date(b.attributes.measured_at)
   );
@@ -32,7 +32,9 @@ function SWQICurveChart({ measurements, highlightedMeasurementId, onPointClick, 
         pointRadius: 4,
         pointHoverRadius: 6,
         pointBackgroundColor: sorted.map(m =>
-          highlightedMeasurementId === m.id ? "#ff5722" : "#0077b6"
+          highlightedMeasurementId === m.id || selectedMeasurementId === m.id
+            ? "#ff5722"
+            : "#0077b6"
         ),
       }
     ]
@@ -84,7 +86,7 @@ function SWQICurveChart({ measurements, highlightedMeasurementId, onPointClick, 
   };
 
   return (
-    <div className="my-5">
+    <div className="my-5 swqi-curve-chart">
       <h5 className="fw-bold text-center mb-3" style={{ color: "#0077b6" }}>SWQI Curve</h5>
       <Line data={data} options={options} height={300} />
     </div>

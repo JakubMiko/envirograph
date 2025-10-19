@@ -19,8 +19,8 @@ function SeriesDetailsPage() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [measurementToEdit, setMeasurementToEdit] = useState(null);
   const [measurementToDelete, setMeasurementToDelete] = useState(null);
-  const [highlightedMeasurementId, setHighlightedMeasurementId] = useState(null); // dla hover
-  const [selectedMeasurementId, setSelectedMeasurementId] = useState(null); // dla kliknięcia
+  const [highlightedMeasurementId, setHighlightedMeasurementId] = useState(null);
+  const [selectedMeasurementId, setSelectedMeasurementId] = useState(null);
   const [printMode, setPrintMode] = useState(false);
   const pageSize = 10;
 
@@ -44,6 +44,20 @@ function SeriesDetailsPage() {
         setMeasurements(measurementsFull);
       });
   }, [id]);
+
+  useEffect(() => {
+    const handleDocumentClick = e => {
+      if (
+        !e.target.closest(".measurement-table") &&
+        !e.target.closest(".swqi-curve-chart")
+      ) {
+        setSelectedMeasurementId(null);
+        setHighlightedMeasurementId(null);
+      }
+    };
+    document.addEventListener("click", handleDocumentClick);
+    return () => document.removeEventListener("click", handleDocumentClick);
+  }, []);
 
   const handlePrint = () => {
     setPrintMode(true);
@@ -105,6 +119,11 @@ function SeriesDetailsPage() {
       const newPage = Math.floor(idx / pageSize) + 1;
       setPage(newPage);
     }
+  };
+
+  const handleRowClick = mId => {
+    setSelectedMeasurementId(mId);
+    setHighlightedMeasurementId(mId);
   };
 
   return (
@@ -191,7 +210,7 @@ function SeriesDetailsPage() {
           highlightedMeasurementId={highlightedMeasurementId}
           selectedMeasurementId={selectedMeasurementId}
           onRowHover={setHighlightedMeasurementId}
-          onRowClick={setSelectedMeasurementId}
+          onRowClick={handleRowClick}
           onEditMeasurement={handleEditMeasurement}
           onDeleteMeasurement={handleDeleteMeasurement}
           onPageChange={setPage}

@@ -14,13 +14,13 @@ function MeasurementTable({
   onRowHover,
   onRowClick,
   selectedMeasurementId,
-  printMode // dodaj printMode
+  printMode
 }) {
   const sorted = measurements.sort(
     (a, b) => new Date(b.attributes.measured_at) - new Date(a.attributes.measured_at)
   );
   const paginated = printMode
-    ? sorted // jeśli drukujemy, pokaż wszystkie
+    ? sorted
     : sorted.slice((page - 1) * pageSize, page * pageSize);
   const totalPages = Math.ceil(sorted.length / pageSize);
 
@@ -31,7 +31,7 @@ function MeasurementTable({
         bordered
         hover
         responsive
-        className="shadow-sm"
+        className="shadow-sm measurement-table"
         style={{ fontSize: "1em" }}
       >
         <thead style={{ background: "#e3f2fd" }}>
