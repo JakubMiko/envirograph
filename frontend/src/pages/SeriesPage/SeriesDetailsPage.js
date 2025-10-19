@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Container, Badge, Table, Button } from "react-bootstrap";
-import { BsPencilSquare } from "react-icons/bs";
+import { BsPencilSquare, BsXCircle } from "react-icons/bs";
 import AddMeasurementModal from "./Measurement/AddMeasurementModal";
 import EditMeasurementModal from "./Measurement/EditMeasurementModal";
+import DeleteMeasurementModal from "./Measurement/DeleteMeasurementModal";
 
 function SeriesDetailsPage() {
   const { id } = useParams();
@@ -14,7 +15,9 @@ function SeriesDetailsPage() {
   const [page, setPage] = useState(1);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [measurementToEdit, setMeasurementToEdit] = useState(null);
+  const [measurementToDelete, setMeasurementToDelete] = useState(null);
   const pageSize = 10;
 
   useEffect(() => {
@@ -74,6 +77,15 @@ function SeriesDetailsPage() {
     setMeasurements(prev =>
       prev.map(m => (m.id === updatedMeasurement.id ? updatedMeasurement : m))
     );
+  };
+
+  const handleDeleteMeasurement = measurement => {
+    setMeasurementToDelete(measurement);
+    setDeleteModal(true);
+  };
+
+  const handleMeasurementDeleted = id => {
+    setMeasurements(prev => prev.filter(m => m.id !== id));
   };
 
   return (
@@ -168,12 +180,20 @@ function SeriesDetailsPage() {
                   <td className="text-center" style={{ padding: "6px 12px" }}>{m.attributes.conductivity_us_cm}</td>
                   {isAdmin && (
                     <td className="text-center" style={{ padding: "6px 12px" }}>
-                      <BsPencilSquare
-                        size={20}
-                        style={{ cursor: "pointer", color: "#0077b6" }}
-                        title="Edit measurement"
-                        onClick={() => handleEditMeasurement(m)}
-                      />
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                        <BsPencilSquare
+                          size={20}
+                          style={{ cursor: "pointer", color: "#0077b6" }}
+                          title="Edit measurement"
+                          onClick={() => handleEditMeasurement(m)}
+                        />
+                        <BsXCircle
+                          size={20}
+                          style={{ cursor: "pointer", color: "#dc3545" }}
+                          title="Delete measurement"
+                          onClick={() => handleDeleteMeasurement(m)}
+                        />
+                      </span>
                     </td>
                   )}
                 </tr>
@@ -212,6 +232,12 @@ function SeriesDetailsPage() {
         measurement={measurementToEdit}
         series={series}
         onMeasurementUpdated={handleMeasurementUpdated}
+      />
+      <DeleteMeasurementModal
+        show={deleteModal}
+        onHide={() => setDeleteModal(false)}
+        measurement={measurementToDelete}
+        onMeasurementDeleted={handleMeasurementDeleted}
       />
     </Container>
   );
