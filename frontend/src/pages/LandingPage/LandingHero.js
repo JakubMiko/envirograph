@@ -1,8 +1,11 @@
 import React from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import { BsDropletHalf } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 function LandingHero() {
+  const navigate = useNavigate();
+
   return (
     <div className="d-flex align-items-center justify-content-center w-100"
       style={{
@@ -34,14 +37,20 @@ function LandingHero() {
           <div className="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
             <Button
               variant="primary"
-              href="#parameters"
+              onClick={() => navigate("/series")}
               className="fw-bold fs-5 px-4 py-2 rounded-pill shadow"
             >
               Try the calculator
             </Button>
             <Button
               variant="outline-primary"
-              href="#parameters"
+              onClick={() => {
+                const el = document.getElementById("parameters");
+                if (el) {
+                  const y = el.getBoundingClientRect().top + window.pageYOffset - 100; // 100px offset
+                  window.scrollTo({ top: y, behavior: "smooth" });
+                }
+              }}
               className="fw-bold fs-5 px-4 py-2 rounded-pill"
               style={{
                 background: "rgba(255,255,255,0.7)",

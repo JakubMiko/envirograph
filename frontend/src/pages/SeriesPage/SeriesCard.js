@@ -10,7 +10,7 @@ function SeriesCard({ serie, isAdmin, onEdit, onDelete }) {
 
   return (
     <Card
-      className="h-100 border-0 shadow-sm text-center position-relative"
+      className="h-100 border-0 shadow-sm text-center position-relative series-card"
       style={{
         borderRadius: 18,
         transition: "transform 0.15s, box-shadow 0.15s",
