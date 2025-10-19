@@ -5,6 +5,7 @@ import AddMeasurementModal from "./Measurement/AddMeasurementModal";
 import EditMeasurementModal from "./Measurement/EditMeasurementModal";
 import DeleteMeasurementModal from "./Measurement/DeleteMeasurementModal";
 import MeasurementTable from "./Measurement/MeasurementTable";
+import SWQICurveChart from "./SWQICurveChart";
 
 function SeriesDetailsPage() {
   const { id } = useParams();
@@ -18,6 +19,8 @@ function SeriesDetailsPage() {
   const [deleteModal, setDeleteModal] = useState(false);
   const [measurementToEdit, setMeasurementToEdit] = useState(null);
   const [measurementToDelete, setMeasurementToDelete] = useState(null);
+  const [highlightedMeasurementId, setHighlightedMeasurementId] = useState(null); // dla hover
+  const [selectedMeasurementId, setSelectedMeasurementId] = useState(null); // dla kliknięcia
   const pageSize = 10;
 
   useEffect(() => {
@@ -83,6 +86,18 @@ function SeriesDetailsPage() {
     setMeasurements(prev => prev.filter(m => m.id !== id));
   };
 
+  const handlePointClick = mId => {
+    setSelectedMeasurementId(mId);
+    if (mId) {
+      const sorted = measurements
+        .slice()
+        .sort((a, b) => new Date(b.attributes.measured_at) - new Date(a.attributes.measured_at));
+      const idx = sorted.findIndex(m => m.id === mId);
+      const newPage = Math.floor(idx / pageSize) + 1;
+      setPage(newPage);
+    }
+  };
+
   return (
     <Container className="py-5" style={{ maxWidth: "900px" }}>
       <div className="mb-4 p-4 rounded shadow-sm" style={{ background: "#f8f9fa" }}>
@@ -122,6 +137,15 @@ function SeriesDetailsPage() {
       </div>
 
       <h4 className="fw-bold mt-5 mb-3 text-center" style={{ color: "#0077b6" }}>Measurements</h4>
+      {measurements.length > 0 && (
+        <SWQICurveChart
+          measurements={measurements}
+          highlightedMeasurementId={highlightedMeasurementId}
+          selectedMeasurementId={selectedMeasurementId}
+          onPointHover={setHighlightedMeasurementId}
+          onPointClick={handlePointClick}
+        />
+      )}
       {isAdmin && (
         <div className="d-flex justify-content-center mb-3">
           <Button variant="success" onClick={() => setShowAddModal(true)}>
@@ -137,6 +161,10 @@ function SeriesDetailsPage() {
           isAdmin={isAdmin}
           page={page}
           pageSize={pageSize}
+          highlightedMeasurementId={highlightedMeasurementId}
+          selectedMeasurementId={selectedMeasurementId}
+          onRowHover={setHighlightedMeasurementId}
+          onRowClick={setSelectedMeasurementId}
           onEditMeasurement={handleEditMeasurement}
           onDeleteMeasurement={handleDeleteMeasurement}
           onPageChange={setPage}

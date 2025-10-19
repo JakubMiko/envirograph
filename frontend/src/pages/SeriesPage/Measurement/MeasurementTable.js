@@ -9,7 +9,11 @@ function MeasurementTable({
   pageSize,
   onEditMeasurement,
   onDeleteMeasurement,
-  onPageChange
+  onPageChange,
+  highlightedMeasurementId,
+  onRowHover,
+  onRowClick,
+  selectedMeasurementId // Add selectedMeasurementId to props
 }) {
   const sorted = measurements.sort(
     (a, b) => new Date(b.attributes.measured_at) - new Date(a.attributes.measured_at)
@@ -41,7 +45,17 @@ function MeasurementTable({
         </thead>
         <tbody>
           {paginated.map(m => (
-            <tr key={m.id}>
+            <tr
+              key={m.id}
+              className={
+                highlightedMeasurementId === m.id || selectedMeasurementId === m.id
+                  ? "table-active border-primary border-3"
+                  : ""
+              }
+              onMouseEnter={() => onRowHover(m.id)}
+              onMouseLeave={() => onRowHover(null)}
+              onClick={() => onRowClick(m.id)}
+            >
               <td
                 className="text-center"
                 style={{
