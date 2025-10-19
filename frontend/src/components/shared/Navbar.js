@@ -22,8 +22,8 @@ function AppNavbar() {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="main-navbar" />
         <Navbar.Collapse id="main-navbar">
-          <div className="d-flex w-100 align-items-center justify-content-center">
-            <Nav className="flex-column flex-md-row align-items-center gap-3 w-100 justify-content-center">
+          <div className="d-flex w-100 align-items-center">
+            <Nav className="flex-column flex-md-row align-items-center gap-3 flex-grow-1 justify-content-center">
               <Nav.Link
                 onClick={() => navigate("/series")}
                 className="fw-bold px-3 py-2"
@@ -48,7 +48,7 @@ function AppNavbar() {
               >
                 Series
               </Nav.Link>
-              {user ? (
+              {user && (
                 <>
                   <span
                     className="fw-bold d-none d-md-inline"
@@ -65,7 +65,10 @@ function AppNavbar() {
                     Logout
                   </Button>
                 </>
-              ) : (
+              )}
+            </Nav>
+            {!user && (
+              <div className="ms-md-auto mt-3 mt-md-0">
                 <Button
                   variant="outline-primary"
                   onClick={() => navigate("/login")}
@@ -74,8 +77,8 @@ function AppNavbar() {
                 >
                   Login
                 </Button>
-              )}
-            </Nav>
+              </div>
+            )}
           </div>
         </Navbar.Collapse>
       </Container>
