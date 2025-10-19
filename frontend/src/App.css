@@ -49,6 +49,15 @@
     display: none !important;
     visibility: hidden !important;
   }
+  canvas {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-top: 24px !important;
+    margin-bottom: 24px !important;
+    max-width: 100% !important;
+    height: auto !important;
+  }
 }
 
 .series-details-content {
