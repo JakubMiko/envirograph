@@ -7,6 +7,7 @@ import Layout from "./components/shared/Layout";
 import LoginForm from "./pages/Authentication/LoginForm";
 import SeriesPage from "./pages/SeriesPage";
 import SeriesDetailsPage from "./pages/SeriesPage/SeriesDetailsPage";
+import ChangePasswordForm from "./pages/Authentication/ChangePasswordForm";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/series" element={<SeriesPage />} />
           <Route path="/series/:id" element={<SeriesDetailsPage />} />
+          <Route path="/change-password" element={<ChangePasswordForm />} />
         </Routes>
       </Layout>
     </BrowserRouter>
